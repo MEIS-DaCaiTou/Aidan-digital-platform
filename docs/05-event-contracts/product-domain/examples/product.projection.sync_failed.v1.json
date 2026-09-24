@@ -1,0 +1,40 @@
+{
+  "spec_version": "1.0",
+  "event_id": "019d0000-0000-7000-8000-000000000201",
+  "event_type": "product.projection.sync_failed",
+  "event_version": 1,
+  "schema_ref": "urn:aidan:event:product.projection.sync_failed:v1",
+  "occurred_at": "2026-09-24T06:10:00Z",
+  "published_at": "2026-09-24T06:10:01Z",
+  "source_system": "JST",
+  "producer": "jst-adapter",
+  "tenant_id": "019d0000-0000-7000-8000-000000000001",
+  "aggregate_type": "PROJECTION",
+  "aggregate_id": "019d0000-0000-7000-8000-000000000200",
+  "aggregate_version": 5,
+  "root_aggregate_id": "019d0000-0000-7000-8000-000000000010",
+  "partition_key": "019d0000-0000-7000-8000-000000000010",
+  "trace_id": "trace-20260924-000002",
+  "correlation_id": "product-registration-000001",
+  "causation_id": "019d0000-0000-7000-8000-000000000101",
+  "actor": {
+    "actor_type": "SERVICE",
+    "actor_id": "jst-adapter",
+    "source_system": "JST"
+  },
+  "data_classification": "INTERNAL",
+  "payload": {
+    "sync_id": "019d0000-0000-7000-8000-000000000200",
+    "target_system": "JST",
+    "entity_type": "SKU",
+    "global_id": "019d0000-0000-7000-8000-000000000030",
+    "operation": "CREATE",
+    "source_event_id": "019d0000-0000-7000-8000-000000000101",
+    "attempt": 5,
+    "retryable": false,
+    "error_code": "JST_CATEGORY_MAPPING_MISSING",
+    "error_message": "Global category is not mapped to a JST category.",
+    "failed_at": "2026-09-24T06:10:00Z",
+    "next_action": "BLOCKED_BY_MAPPING"
+  }
+}

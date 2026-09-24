@@ -1,0 +1,47 @@
+{
+  "spec_version": "1.0",
+  "event_id": "019d0000-0000-7000-8000-000000000101",
+  "event_type": "product.sku.created",
+  "event_version": 1,
+  "schema_ref": "urn:aidan:event:product.sku.created:v1",
+  "occurred_at": "2026-09-24T06:00:00Z",
+  "published_at": "2026-09-24T06:00:00Z",
+  "source_system": "PRODUCT_MASTER",
+  "producer": "product-master-service",
+  "tenant_id": "019d0000-0000-7000-8000-000000000001",
+  "aggregate_type": "SKU",
+  "aggregate_id": "019d0000-0000-7000-8000-000000000030",
+  "aggregate_version": 1,
+  "root_aggregate_id": "019d0000-0000-7000-8000-000000000010",
+  "partition_key": "019d0000-0000-7000-8000-000000000010",
+  "trace_id": "trace-20260924-000001",
+  "correlation_id": "product-registration-000001",
+  "causation_id": "019d0000-0000-7000-8000-000000000100",
+  "actor": {
+    "actor_type": "SERVICE",
+    "actor_id": "product-master-service",
+    "source_system": "PRODUCT_MASTER"
+  },
+  "data_classification": "INTERNAL",
+  "payload": {
+    "sku": {
+      "sku_id": "019d0000-0000-7000-8000-000000000030",
+      "sku_code": "SKU-2027-00018231",
+      "spu_id": "019d0000-0000-7000-8000-000000000010",
+      "spu_code": "SPU-2027-00001823",
+      "style_no": "AW27JK001",
+      "brand_id": "019d0000-0000-7000-8000-000000000020",
+      "category_id": "019d0000-0000-7000-8000-000000000021",
+      "year_id": "019d0000-0000-7000-8000-000000000022",
+      "season_id": "019d0000-0000-7000-8000-000000000023",
+      "wave_id": "019d0000-0000-7000-8000-000000000024",
+      "color_id": "019d0000-0000-7000-8000-000000000040",
+      "color_code": "BLK01",
+      "size_id": "019d0000-0000-7000-8000-000000000041",
+      "size_code": "M",
+      "primary_barcode": "6901234567892",
+      "sku_status": "DRAFT",
+      "version": 1
+    }
+  }
+}

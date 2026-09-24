@@ -1,0 +1,814 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aidan:schema:product-domain-event:v1",
+  "title": "Aidan Product Domain Event V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_version",
+    "event_id",
+    "event_type",
+    "event_version",
+    "schema_ref",
+    "occurred_at",
+    "published_at",
+    "source_system",
+    "producer",
+    "tenant_id",
+    "aggregate_type",
+    "aggregate_id",
+    "aggregate_version",
+    "root_aggregate_id",
+    "partition_key",
+    "trace_id",
+    "correlation_id",
+    "causation_id",
+    "actor",
+    "data_classification",
+    "payload"
+  ],
+  "properties": {
+    "spec_version": { "const": "1.0" },
+    "event_id": { "$ref": "#/$defs/uuidV7" },
+    "event_type": {
+      "enum": [
+        "product.identity.requested",
+        "product.identity.request_rejected",
+        "product.spu.created",
+        "product.spu.updated",
+        "product.spu.approved",
+        "product.spu.status_changed",
+        "product.sku.created",
+        "product.sku.updated",
+        "product.sku.status_changed",
+        "product.barcode.assigned",
+        "product.barcode.changed",
+        "product.mapping.created",
+        "product.mapping.updated",
+        "product.projection.synced",
+        "product.projection.sync_failed",
+        "product.projection.drift_detected"
+      ]
+    },
+    "event_version": { "const": 1 },
+    "schema_ref": {
+      "type": "string",
+      "pattern": "^urn:aidan:event:product\\.[a-z_]+\\.[a-z_]+:v1$"
+    },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "published_at": { "type": "string", "format": "date-time" },
+    "source_system": { "$ref": "#/$defs/sourceSystem" },
+    "producer": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "tenant_id": { "$ref": "#/$defs/uuidV7" },
+    "aggregate_type": {
+      "enum": ["SPU", "SKU", "BARCODE", "MAPPING", "PROJECTION", "IDENTITY_REQUEST"]
+    },
+    "aggregate_id": { "$ref": "#/$defs/uuidV7" },
+    "aggregate_version": { "type": "integer", "minimum": 1 },
+    "root_aggregate_id": { "$ref": "#/$defs/uuidV7" },
+    "partition_key": { "$ref": "#/$defs/uuidV7" },
+    "trace_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "correlation_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "causation_id": {
+      "oneOf": [
+        { "$ref": "#/$defs/uuidV7" },
+        { "type": "null" }
+      ]
+    },
+    "actor": { "$ref": "#/$defs/actor" },
+    "data_classification": { "const": "INTERNAL" },
+    "payload": { "type": "object" }
+  },
+  "allOf": [
+    {
+      "oneOf": [
+        {
+          "properties": {
+            "event_type": { "const": "product.identity.requested" },
+            "schema_ref": { "const": "urn:aidan:event:product.identity.requested:v1" },
+            "aggregate_type": { "const": "IDENTITY_REQUEST" },
+            "source_system": { "const": "INTEGRATION_PLATFORM" },
+            "payload": { "$ref": "#/$defs/identityRequestedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.identity.request_rejected" },
+            "schema_ref": { "const": "urn:aidan:event:product.identity.request_rejected:v1" },
+            "aggregate_type": { "const": "IDENTITY_REQUEST" },
+            "source_system": { "const": "PRODUCT_MASTER" },
+            "payload": { "$ref": "#/$defs/identityRejectedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.spu.created" },
+            "schema_ref": { "const": "urn:aidan:event:product.spu.created:v1" },
+            "aggregate_type": { "const": "SPU" },
+            "source_system": { "const": "PRODUCT_MASTER" },
+            "payload": { "$ref": "#/$defs/spuCreatedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.spu.updated" },
+            "schema_ref": { "const": "urn:aidan:event:product.spu.updated:v1" },
+            "aggregate_type": { "const": "SPU" },
+            "source_system": { "const": "PRODUCT_MASTER" },
+            "payload": { "$ref": "#/$defs/spuUpdatedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.spu.approved" },
+            "schema_ref": { "const": "urn:aidan:event:product.spu.approved:v1" },
+            "aggregate_type": { "const": "SPU" },
+            "source_system": { "const": "PRODUCT_MASTER" },
+            "payload": { "$ref": "#/$defs/spuApprovedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.spu.status_changed" },
+            "schema_ref": { "const": "urn:aidan:event:product.spu.status_changed:v1" },
+            "aggregate_type": { "const": "SPU" },
+            "source_system": { "const": "PRODUCT_MASTER" },
+            "payload": { "$ref": "#/$defs/spuStatusChangedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.sku.created" },
+            "schema_ref": { "const": "urn:aidan:event:product.sku.created:v1" },
+            "aggregate_type": { "const": "SKU" },
+            "source_system": { "const": "PRODUCT_MASTER" },
+            "payload": { "$ref": "#/$defs/skuCreatedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.sku.updated" },
+            "schema_ref": { "const": "urn:aidan:event:product.sku.updated:v1" },
+            "aggregate_type": { "const": "SKU" },
+            "source_system": { "const": "PRODUCT_MASTER" },
+            "payload": { "$ref": "#/$defs/skuUpdatedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.sku.status_changed" },
+            "schema_ref": { "const": "urn:aidan:event:product.sku.status_changed:v1" },
+            "aggregate_type": { "const": "SKU" },
+            "source_system": { "const": "PRODUCT_MASTER" },
+            "payload": { "$ref": "#/$defs/skuStatusChangedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.barcode.assigned" },
+            "schema_ref": { "const": "urn:aidan:event:product.barcode.assigned:v1" },
+            "aggregate_type": { "const": "BARCODE" },
+            "source_system": { "const": "PRODUCT_MASTER" },
+            "payload": { "$ref": "#/$defs/barcodeAssignedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.barcode.changed" },
+            "schema_ref": { "const": "urn:aidan:event:product.barcode.changed:v1" },
+            "aggregate_type": { "const": "BARCODE" },
+            "source_system": { "const": "PRODUCT_MASTER" },
+            "payload": { "$ref": "#/$defs/barcodeChangedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.mapping.created" },
+            "schema_ref": { "const": "urn:aidan:event:product.mapping.created:v1" },
+            "aggregate_type": { "const": "MAPPING" },
+            "source_system": { "const": "PRODUCT_MASTER" },
+            "payload": { "$ref": "#/$defs/mappingCreatedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.mapping.updated" },
+            "schema_ref": { "const": "urn:aidan:event:product.mapping.updated:v1" },
+            "aggregate_type": { "const": "MAPPING" },
+            "source_system": { "const": "PRODUCT_MASTER" },
+            "payload": { "$ref": "#/$defs/mappingUpdatedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.projection.synced" },
+            "schema_ref": { "const": "urn:aidan:event:product.projection.synced:v1" },
+            "aggregate_type": { "const": "PROJECTION" },
+            "source_system": { "enum": ["LINGMAO", "JST"] },
+            "payload": { "$ref": "#/$defs/projectionSyncedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.projection.sync_failed" },
+            "schema_ref": { "const": "urn:aidan:event:product.projection.sync_failed:v1" },
+            "aggregate_type": { "const": "PROJECTION" },
+            "source_system": { "enum": ["LINGMAO", "JST"] },
+            "payload": { "$ref": "#/$defs/projectionFailedPayload" }
+          }
+        },
+        {
+          "properties": {
+            "event_type": { "const": "product.projection.drift_detected" },
+            "schema_ref": { "const": "urn:aidan:event:product.projection.drift_detected:v1" },
+            "aggregate_type": { "const": "PROJECTION" },
+            "source_system": { "enum": ["LINGMAO", "JST"] },
+            "payload": { "$ref": "#/$defs/projectionDriftPayload" }
+          }
+        }
+      ]
+    }
+  ],
+  "$defs": {
+    "uuidV7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "nullableUuidV7": {
+      "oneOf": [
+        { "$ref": "#/$defs/uuidV7" },
+        { "type": "null" }
+      ]
+    },
+    "nullableString": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "sourceSystem": {
+      "enum": [
+        "PRODUCT_MASTER",
+        "LINGMAO",
+        "JST",
+        "POS",
+        "ERP",
+        "DAM",
+        "CHANNEL_DOUYIN",
+        "CHANNEL_TMALL",
+        "CHANNEL_JD",
+        "CHANNEL_PDD",
+        "CHANNEL_XHS",
+        "CHANNEL_WECHAT",
+        "INTEGRATION_PLATFORM",
+        "CHANNEL_PLATFORM",
+        "SYSTEM"
+      ]
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_type", "actor_id", "source_system"],
+      "properties": {
+        "actor_type": { "enum": ["USER", "SERVICE", "AGENT", "SYSTEM"] },
+        "actor_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "source_system": { "$ref": "#/$defs/sourceSystem" }
+      }
+    },
+    "externalRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_system", "entity_type", "source_id", "source_code"],
+      "properties": {
+        "source_system": { "$ref": "#/$defs/sourceSystem" },
+        "entity_type": {
+          "enum": ["SPU", "SKU", "BRAND", "CATEGORY", "COLOR", "SIZE", "BARCODE"]
+        },
+        "source_id": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "source_code": { "$ref": "#/$defs/nullableString" }
+      }
+    },
+    "changeSetFields": {
+      "type": "object",
+      "required": ["changed_fields", "change_reason", "previous", "current"],
+      "properties": {
+        "changed_fields": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "change_reason": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "previous": { "type": "object" },
+        "current": { "type": "object" }
+      }
+    },
+    "identityVariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_sku_id", "color_code", "size_code", "barcode"],
+      "properties": {
+        "source_sku_id": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "color_code": { "$ref": "#/$defs/nullableString" },
+        "size_code": { "$ref": "#/$defs/nullableString" },
+        "barcode": { "$ref": "#/$defs/nullableString" }
+      }
+    },
+    "identityRequestedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_id",
+        "request_source",
+        "source_ref",
+        "style_no",
+        "product_name",
+        "brand_code",
+        "category_code",
+        "year_code",
+        "season_code",
+        "wave_code",
+        "gender_code",
+        "variants"
+      ],
+      "properties": {
+        "request_id": { "$ref": "#/$defs/uuidV7" },
+        "request_source": { "const": "LINGMAO" },
+        "source_ref": { "$ref": "#/$defs/externalRef" },
+        "style_no": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "product_name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "brand_code": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "category_code": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "year_code": { "type": "string", "minLength": 1, "maxLength": 20 },
+        "season_code": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "wave_code": { "$ref": "#/$defs/nullableString" },
+        "gender_code": {
+          "enum": ["WOMEN", "MEN", "UNISEX", "KIDS_GIRL", "KIDS_BOY", "KIDS_UNISEX", "OTHER"]
+        },
+        "variants": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/identityVariant" }
+        }
+      }
+    },
+    "identityRejectedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_id",
+        "request_source",
+        "source_ref",
+        "reason_code",
+        "reason_message",
+        "quality_issue_id",
+        "retryable"
+      ],
+      "properties": {
+        "request_id": { "$ref": "#/$defs/uuidV7" },
+        "request_source": { "const": "LINGMAO" },
+        "source_ref": { "$ref": "#/$defs/externalRef" },
+        "reason_code": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "reason_message": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "quality_issue_id": { "$ref": "#/$defs/nullableUuidV7" },
+        "retryable": { "type": "boolean" }
+      }
+    },
+    "spuSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "spu_id",
+        "spu_code",
+        "style_no",
+        "product_name",
+        "brand_id",
+        "category_id",
+        "year_id",
+        "season_id",
+        "wave_id",
+        "gender_code",
+        "product_type",
+        "variant_schema",
+        "lifecycle_status",
+        "sellable_status",
+        "development_status",
+        "version"
+      ],
+      "properties": {
+        "spu_id": { "$ref": "#/$defs/uuidV7" },
+        "spu_code": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "style_no": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "product_name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "brand_id": { "$ref": "#/$defs/uuidV7" },
+        "category_id": { "$ref": "#/$defs/uuidV7" },
+        "year_id": { "$ref": "#/$defs/uuidV7" },
+        "season_id": { "$ref": "#/$defs/uuidV7" },
+        "wave_id": { "$ref": "#/$defs/nullableUuidV7" },
+        "gender_code": {
+          "enum": ["WOMEN", "MEN", "UNISEX", "KIDS_GIRL", "KIDS_BOY", "KIDS_UNISEX", "OTHER"]
+        },
+        "product_type": { "enum": ["APPAREL", "FOOTWEAR", "ACCESSORY", "BAG", "HOME", "OTHER"] },
+        "variant_schema": { "enum": ["COLOR_SIZE", "COLOR_ONLY", "SIZE_ONLY", "NONE"] },
+        "lifecycle_status": {
+          "enum": ["DRAFT", "REVIEWING", "APPROVED", "ACTIVE", "CLEARANCE", "DISCONTINUED", "ARCHIVED"]
+        },
+        "sellable_status": { "enum": ["NOT_SELLABLE", "SELLABLE", "SUSPENDED", "STOPPED"] },
+        "development_status": { "enum": ["PLANNED", "DEVELOPING", "CONFIRMED", "CANCELLED"] },
+        "version": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "spuCreatedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spu", "source_ref"],
+      "properties": {
+        "spu": { "$ref": "#/$defs/spuSnapshot" },
+        "source_ref": {
+          "oneOf": [
+            { "$ref": "#/$defs/externalRef" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "spuUpdatedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spu", "changed_fields", "change_reason", "previous", "current"],
+      "properties": {
+        "spu": { "$ref": "#/$defs/spuSnapshot" },
+        "changed_fields": { "$ref": "#/$defs/changeSetFields/properties/changed_fields" },
+        "change_reason": { "$ref": "#/$defs/changeSetFields/properties/change_reason" },
+        "previous": { "type": "object" },
+        "current": { "type": "object" }
+      }
+    },
+    "spuApprovedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spu", "approved_at", "approved_by"],
+      "properties": {
+        "spu": {
+          "allOf": [
+            { "$ref": "#/$defs/spuSnapshot" },
+            {
+              "type": "object",
+              "properties": {
+                "lifecycle_status": { "const": "APPROVED" }
+              }
+            }
+          ]
+        },
+        "approved_at": { "type": "string", "format": "date-time" },
+        "approved_by": { "type": "string", "minLength": 1, "maxLength": 128 }
+      }
+    },
+    "spuStatusChangedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "spu_id",
+        "spu_code",
+        "status_dimension",
+        "from_status",
+        "to_status",
+        "effective_at",
+        "change_reason",
+        "version"
+      ],
+      "properties": {
+        "spu_id": { "$ref": "#/$defs/uuidV7" },
+        "spu_code": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "status_dimension": { "enum": ["LIFECYCLE", "SELLABLE", "DEVELOPMENT"] },
+        "from_status": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "to_status": { "type": "string", "minLength": 1, "maxLength": 50 },
+        "effective_at": { "type": "string", "format": "date-time" },
+        "change_reason": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "version": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "skuSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sku_id",
+        "sku_code",
+        "spu_id",
+        "spu_code",
+        "style_no",
+        "brand_id",
+        "category_id",
+        "year_id",
+        "season_id",
+        "wave_id",
+        "color_id",
+        "color_code",
+        "size_id",
+        "size_code",
+        "primary_barcode",
+        "sku_status",
+        "version"
+      ],
+      "properties": {
+        "sku_id": { "$ref": "#/$defs/uuidV7" },
+        "sku_code": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "spu_id": { "$ref": "#/$defs/uuidV7" },
+        "spu_code": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "style_no": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "brand_id": { "$ref": "#/$defs/uuidV7" },
+        "category_id": { "$ref": "#/$defs/uuidV7" },
+        "year_id": { "$ref": "#/$defs/uuidV7" },
+        "season_id": { "$ref": "#/$defs/uuidV7" },
+        "wave_id": { "$ref": "#/$defs/nullableUuidV7" },
+        "color_id": { "$ref": "#/$defs/nullableUuidV7" },
+        "color_code": { "$ref": "#/$defs/nullableString" },
+        "size_id": { "$ref": "#/$defs/nullableUuidV7" },
+        "size_code": { "$ref": "#/$defs/nullableString" },
+        "primary_barcode": { "$ref": "#/$defs/nullableString" },
+        "sku_status": { "enum": ["DRAFT", "ACTIVE", "SUSPENDED", "DISCONTINUED", "ARCHIVED"] },
+        "version": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "skuCreatedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sku"],
+      "properties": {
+        "sku": { "$ref": "#/$defs/skuSnapshot" }
+      }
+    },
+    "skuUpdatedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sku", "changed_fields", "change_reason", "previous", "current"],
+      "properties": {
+        "sku": { "$ref": "#/$defs/skuSnapshot" },
+        "changed_fields": { "$ref": "#/$defs/changeSetFields/properties/changed_fields" },
+        "change_reason": { "$ref": "#/$defs/changeSetFields/properties/change_reason" },
+        "previous": { "type": "object" },
+        "current": { "type": "object" }
+      }
+    },
+    "skuStatusChangedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sku_id",
+        "sku_code",
+        "spu_id",
+        "from_status",
+        "to_status",
+        "effective_at",
+        "change_reason",
+        "version"
+      ],
+      "properties": {
+        "sku_id": { "$ref": "#/$defs/uuidV7" },
+        "sku_code": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "spu_id": { "$ref": "#/$defs/uuidV7" },
+        "from_status": { "enum": ["DRAFT", "ACTIVE", "SUSPENDED", "DISCONTINUED", "ARCHIVED"] },
+        "to_status": { "enum": ["DRAFT", "ACTIVE", "SUSPENDED", "DISCONTINUED", "ARCHIVED"] },
+        "effective_at": { "type": "string", "format": "date-time" },
+        "change_reason": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "version": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "barcodeAssignedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "barcode_id",
+        "sku_id",
+        "sku_code",
+        "spu_id",
+        "barcode",
+        "barcode_type",
+        "is_primary",
+        "status",
+        "valid_from",
+        "version"
+      ],
+      "properties": {
+        "barcode_id": { "$ref": "#/$defs/uuidV7" },
+        "sku_id": { "$ref": "#/$defs/uuidV7" },
+        "sku_code": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "spu_id": { "$ref": "#/$defs/uuidV7" },
+        "barcode": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "barcode_type": { "enum": ["EAN13", "EAN8", "UPC_A", "UPC_E", "CODE128", "INTERNAL", "OTHER"] },
+        "is_primary": { "type": "boolean" },
+        "status": { "enum": ["ACTIVE", "INACTIVE", "ARCHIVED"] },
+        "valid_from": { "type": "string", "format": "date-time" },
+        "version": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "barcodeChangedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "barcode_id",
+        "sku_id",
+        "sku_code",
+        "spu_id",
+        "barcode",
+        "barcode_type",
+        "is_primary",
+        "status",
+        "valid_from",
+        "version",
+        "change_type",
+        "previous_barcode",
+        "previous_status",
+        "change_reason"
+      ],
+      "properties": {
+        "barcode_id": { "$ref": "#/$defs/uuidV7" },
+        "sku_id": { "$ref": "#/$defs/uuidV7" },
+        "sku_code": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "spu_id": { "$ref": "#/$defs/uuidV7" },
+        "barcode": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "barcode_type": { "enum": ["EAN13", "EAN8", "UPC_A", "UPC_E", "CODE128", "INTERNAL", "OTHER"] },
+        "is_primary": { "type": "boolean" },
+        "status": { "enum": ["ACTIVE", "INACTIVE", "ARCHIVED"] },
+        "valid_from": { "type": "string", "format": "date-time" },
+        "version": { "type": "integer", "minimum": 1 },
+        "change_type": { "enum": ["PRIMARY_CHANGED", "STATUS_CHANGED", "VALUE_CORRECTED"] },
+        "previous_barcode": { "$ref": "#/$defs/nullableString" },
+        "previous_status": {
+          "oneOf": [
+            { "enum": ["ACTIVE", "INACTIVE", "ARCHIVED"] },
+            { "type": "null" }
+          ]
+        },
+        "change_reason": { "type": "string", "minLength": 1, "maxLength": 500 }
+      }
+    },
+    "mappingSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mapping_id",
+        "entity_type",
+        "global_id",
+        "source_system",
+        "source_entity_type",
+        "source_id",
+        "source_code",
+        "mapping_status",
+        "is_primary",
+        "valid_from"
+      ],
+      "properties": {
+        "mapping_id": { "$ref": "#/$defs/uuidV7" },
+        "entity_type": { "enum": ["SPU", "SKU", "BRAND", "CATEGORY", "COLOR", "SIZE", "BARCODE"] },
+        "global_id": { "$ref": "#/$defs/uuidV7" },
+        "source_system": { "$ref": "#/$defs/sourceSystem" },
+        "source_entity_type": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "source_id": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "source_code": { "$ref": "#/$defs/nullableString" },
+        "mapping_status": { "enum": ["PENDING", "ACTIVE", "INACTIVE", "CONFLICT"] },
+        "is_primary": { "type": "boolean" },
+        "valid_from": { "type": "string", "format": "date-time" },
+        "valid_to": {
+          "oneOf": [
+            { "type": "string", "format": "date-time" },
+            { "type": "null" }
+          ]
+        },
+        "metadata": { "type": "object" }
+      }
+    },
+    "mappingCreatedPayload": { "$ref": "#/$defs/mappingSnapshot" },
+    "mappingUpdatedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mapping", "changed_fields", "change_reason", "previous", "current"],
+      "properties": {
+        "mapping": { "$ref": "#/$defs/mappingSnapshot" },
+        "changed_fields": { "$ref": "#/$defs/changeSetFields/properties/changed_fields" },
+        "change_reason": { "$ref": "#/$defs/changeSetFields/properties/change_reason" },
+        "previous": { "type": "object" },
+        "current": { "type": "object" }
+      }
+    },
+    "projectionBase": {
+      "type": "object",
+      "required": ["sync_id", "target_system", "entity_type", "global_id", "operation", "source_event_id"],
+      "properties": {
+        "sync_id": { "$ref": "#/$defs/uuidV7" },
+        "target_system": { "enum": ["LINGMAO", "JST"] },
+        "entity_type": { "enum": ["SPU", "SKU", "BARCODE"] },
+        "global_id": { "$ref": "#/$defs/uuidV7" },
+        "operation": { "enum": ["CREATE", "UPDATE", "STATUS_CHANGE", "UPSERT"] },
+        "source_event_id": { "$ref": "#/$defs/uuidV7" }
+      }
+    },
+    "projectionSyncedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sync_id",
+        "target_system",
+        "entity_type",
+        "global_id",
+        "operation",
+        "source_event_id",
+        "source_aggregate_version",
+        "external_ref",
+        "vendor_response_code",
+        "synced_at"
+      ],
+      "properties": {
+        "sync_id": { "$ref": "#/$defs/uuidV7" },
+        "target_system": { "enum": ["LINGMAO", "JST"] },
+        "entity_type": { "enum": ["SPU", "SKU", "BARCODE"] },
+        "global_id": { "$ref": "#/$defs/uuidV7" },
+        "operation": { "enum": ["CREATE", "UPDATE", "STATUS_CHANGE", "UPSERT"] },
+        "source_event_id": { "$ref": "#/$defs/uuidV7" },
+        "source_aggregate_version": { "type": "integer", "minimum": 1 },
+        "external_ref": { "$ref": "#/$defs/externalRef" },
+        "vendor_response_code": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "synced_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "projectionFailedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sync_id",
+        "target_system",
+        "entity_type",
+        "global_id",
+        "operation",
+        "source_event_id",
+        "attempt",
+        "retryable",
+        "error_code",
+        "error_message",
+        "failed_at",
+        "next_action"
+      ],
+      "properties": {
+        "sync_id": { "$ref": "#/$defs/uuidV7" },
+        "target_system": { "enum": ["LINGMAO", "JST"] },
+        "entity_type": { "enum": ["SPU", "SKU", "BARCODE"] },
+        "global_id": { "$ref": "#/$defs/uuidV7" },
+        "operation": { "enum": ["CREATE", "UPDATE", "STATUS_CHANGE", "UPSERT"] },
+        "source_event_id": { "$ref": "#/$defs/uuidV7" },
+        "attempt": { "type": "integer", "minimum": 1 },
+        "retryable": { "type": "boolean" },
+        "error_code": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "error_message": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "failed_at": { "type": "string", "format": "date-time" },
+        "next_action": { "enum": ["RETRY_SCHEDULED", "DLQ", "MANUAL_REVIEW", "BLOCKED_BY_MAPPING"] }
+      }
+    },
+    "projectionDriftPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reconciliation_id",
+        "target_system",
+        "entity_type",
+        "global_id",
+        "external_ref",
+        "drift_type",
+        "field_differences",
+        "detected_at",
+        "recommended_action",
+        "quality_issue_id"
+      ],
+      "properties": {
+        "reconciliation_id": { "$ref": "#/$defs/uuidV7" },
+        "target_system": { "enum": ["LINGMAO", "JST"] },
+        "entity_type": { "enum": ["SPU", "SKU", "BARCODE"] },
+        "global_id": { "$ref": "#/$defs/nullableUuidV7" },
+        "external_ref": { "$ref": "#/$defs/externalRef" },
+        "drift_type": {
+          "enum": [
+            "MISSING_PROJECTION",
+            "VALUE_MISMATCH",
+            "ORPHAN_EXTERNAL_PRODUCT",
+            "IMMUTABLE_FIELD_CHANGED",
+            "STATUS_MISMATCH"
+          ]
+        },
+        "field_differences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["field", "expected", "actual"],
+            "properties": {
+              "field": { "type": "string", "minLength": 1 },
+              "expected": {},
+              "actual": {}
+            }
+          }
+        },
+        "detected_at": { "type": "string", "format": "date-time" },
+        "recommended_action": { "enum": ["AUTO_FIX", "MANUAL_FIX", "IGNORE_WITH_REASON"] },
+        "quality_issue_id": { "$ref": "#/$defs/uuidV7" }
+      }
+    }
+  }
+}

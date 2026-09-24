@@ -16,5 +16,8 @@
 | ADR-010 | Agent 不得直连数据库；写动作必须通过 Domain API + Policy + Approval | Frozen |
 | ADR-011 | Akeneo、Saleor 不进入 V1 核心；不重建已有 PLM/SCM/WMS/ERP 通用能力 | Frozen |
 | ADR-012 | 后续 Event Contract 必须继承 Product Master 与 Mapping V1.0 已冻结主键和字段语义 | Frozen |
+| ADR-013 | Product Event 使用 At-least-once + Transactional Outbox + Consumer Inbox；`event_id` 为消费幂等键 | Proposed |
+| ADR-014 | Product Event 以 `spu_id` 作为商品族 Partition Key；SKU 事件的 Aggregate ID 仍为 `sku_id` | Proposed |
+| ADR-015 | Adapter 同步采用异步任务；只有 Vendor 业务响应确认成功后才发布 Projection Synced 事件 | Proposed |
 
-后续新增重大决策使用 ADR-013 起连续编号。
+ADR-013 至 ADR-015 随 Product Domain Event Contract V1.0 合并后转为 Frozen。后续新增重大决策使用 ADR-016 起连续编号。

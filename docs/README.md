@@ -27,6 +27,11 @@
 3. [领猫 × 聚水潭 × Product Master 数据映射 V1.0](./04-integration/lingmao-jst-product-master-mapping-v1.0.md)
 4. [AS-IS 调查存档 V1.0](./02-data-governance/as-is-data-business-authority-matrix-v1.0.md)
 
+## 当前工作状态
+
+- [项目状态与接手基线](./00-governance/project-status.md)
+- [Product Domain Event Contract V1.0](./05-event-contracts/product-domain/product-domain-event-contract-v1.0.md)（PR 审核中，合并后进入冻结基线）
+
 ## 治理声明
 
 - AS-IS 仅用于迁移调查与历史存档。
