@@ -29,7 +29,8 @@
 
 ## 当前方案
 
-- [飞书 BaseApp 业务运营平台蓝图 V1.0](./07-prd/feishu-baseapp-operations-platform-blueprint-v1.0.md)（方案已确认，尚未执行飞书结构或数据变更）
+- [飞书 BaseApp 业务运营平台蓝图 V1.0](./07-prd/feishu-baseapp-operations-platform-blueprint-v1.0.md)（方案已确认）
+- [飞书 BaseApp Phase 1 实施报告 V1.0](./10-poc/feishu-baseapp-phase1-implementation-report-v1.0.md)（19 个页面、62 个组件已实施）
 ## 治理声明
 
 - AS-IS 仅用于迁移调查与历史存档。

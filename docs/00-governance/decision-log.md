@@ -16,5 +16,6 @@
 | ADR-010 | Agent 不得直连数据库；写动作必须通过 Domain API + Policy + Approval | Frozen |
 | ADR-011 | Akeneo、Saleor 不进入 V1 核心；不重建已有 PLM/SCM/WMS/ERP 通用能力 | Frozen |
 | ADR-012 | 后续 Event Contract 必须继承 Product Master 与 Mapping V1.0 已冻结主键和字段语义 | Frozen |
+| ADR-013 | 飞书作为第一阶段完整可用的业务运营平台与 PoC，并作为后续自研核心系统的前台和协同层 | Frozen |
 
-后续新增重大决策使用 ADR-013 起连续编号。
+后续新增重大决策使用 ADR-014 起连续编号。
