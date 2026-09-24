@@ -27,6 +27,9 @@
 3. [领猫 × 聚水潭 × Product Master 数据映射 V1.0](./04-integration/lingmao-jst-product-master-mapping-v1.0.md)
 4. [AS-IS 调查存档 V1.0](./02-data-governance/as-is-data-business-authority-matrix-v1.0.md)
 
+## 当前方案
+
+- [飞书 BaseApp 业务运营平台蓝图 V1.0](./07-prd/feishu-baseapp-operations-platform-blueprint-v1.0.md)（方案已确认，尚未执行飞书结构或数据变更）
 ## 治理声明
 
 - AS-IS 仅用于迁移调查与历史存档。
